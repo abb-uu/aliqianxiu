@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 阻止表单的默认提交事件 -->
+    <form id="userForm" onsubmit="return false">
+        用户名：<input type="text" name="username" id="username">
+        密码：<input type="text" name="password" id="password">
+        <input type="submit" value="登录" id="btn">
+    </form>
+    <script src="../assets/vendors/jquery/jquery.js"></script>
+    <script>
+        $('#btn').on('click', function (e) {
+            // 获取元素
+            var $username = $('#username');
+            var $password = $('#password');
+            // 客户端用户名验证
+            if(!$username.val()) return;
+            // 客户端密码验证
+            if(!$password.val()) return;
+            // 获取数据
+            var username_content = $username.val();
+            var password_content = $password.val();
+            console.log(username_content,password_content);
+            // 发送ajax请求
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost/user/check',
+                data: {
+                    username: username_content,
+                    password: password_content,
+                },
+                dataType: 'json',
+                success: function (res) {
+                    if(res.flag == 1) {
+                        location.href = 'http://localhost/user/success';
+                    }else if(res.flag == 2) {
+                        location.href = 'http://localhost/user/failure';
+                    }
+                }
+
+            })
+        })
+    </script>
+</body>
+
+</html>
